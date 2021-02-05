@@ -168,15 +168,18 @@ unsigned char Xbox_one::BatteryLevel(unsigned short pad)
 #if NDEBUG
 	return BATTERY_LEVEL_FULL;
 #else
-	std::cerr << "DEBUG() << " << "GamePad Battery level don't work on x64." << std::endl;
+	std::cerr << "\033[33m" << "DEBUG >> " << "GamePad Battery level don't work on x64." << "\033[0m" << std::endl;
 	return BATTERY_LEVEL_FULL;
 #endif
 #endif
 }
 
 
-void Xbox_one::GamePadUpdate(float elapsed)
+void Xbox_one::GamePadUpdate()
 {
+	float elapsed = std::chrono::duration<float>(std::chrono::steady_clock::now() - start).count();
+	start = std::chrono::steady_clock::now();
+
 	for (int i = 0; i < 4; i++)
 	{
 		// check new

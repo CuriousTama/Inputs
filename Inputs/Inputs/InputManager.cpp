@@ -1,10 +1,5 @@
 #include "InputManager.h"
 
-void Input::addKey(Key k)
-{
-	keys.push_back(k);
-}
-
 void Input::eventUpdate()
 {
 	bool current_state = this->pressed;
@@ -82,9 +77,9 @@ void InputManager::eventUpdate()
 	}
 }
 
-void InputManager::update(float elapsed)
+void InputManager::update()
 {
-	x.GamePadUpdate(elapsed);
+	x.GamePadUpdate();
 	c.Update();
 
 	this->eventUpdate();

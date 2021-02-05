@@ -26,8 +26,8 @@ public:
 	template<class FUNC, class ...Keys>
 	Input(PC::Computer* cptr, Xbox_one* xptr, Action action, FUNC f, Keys... inputs);
 
-	void addKey() {}
-	void addKey(Key k);
+	template<class K>
+	void addKey(K& k);
 
 	template<class K, class ...Keys>
 	void addKey(K k, Keys... inputs);
@@ -40,7 +40,7 @@ public:
 
 class InputManager
 {
-	std::unordered_map<std::string, std::pair<Input, bool>> InputList;
+	std::map<std::string, std::pair<Input, bool>> InputList;
 	void eventUpdate();
 
 public:
@@ -56,10 +56,11 @@ public:
 	void bind(std::string name);
 	void unbind(std::string name);
 
-	void update(float elapsed);
+
+	void update();
 };
 
-#endif // !INPUTMANAGER_H
+
 
 
 
@@ -85,9 +86,17 @@ inline Input::Input(PC::Computer* cptr, Xbox_one* xptr,Action action, FUNC f, Ke
 	pressed = false;
 }
 
+template<class K>
+void Input::addKey(K& k)
+{
+	keys.push_back(k);
+}
+
 template<class K, class ...Keys>
 inline void Input::addKey(K k, Keys ...inputs)
 {
 	keys.push_back(k);
 	addKey(inputs...);
 }
+
+#endif // !INPUTMANAGER_H

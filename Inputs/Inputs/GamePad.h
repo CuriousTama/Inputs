@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <Xinput.h>
+#include <chrono>
 
 #pragma warning(disable : 26812) // disable warning of using enum
 #pragma warning(disable : 5105)  // disable undefined #define in winbase.h
@@ -63,34 +64,37 @@ class Xbox_one
 	void _Trigger(unsigned short pad, Xbox_one_::Trigger trigger, bool& a, bool& b);
 	void _Axis(unsigned short pad, Xbox_one_::Axis axis, bool& a, bool& b);
 
+	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+
 public:
-	Xbox_one() { this->GamePadUpdate(0.f); };
+	Xbox_one() { this->GamePadUpdate(); };
 	~Xbox_one() = default;
 
 
-	void GamePadUpdate(float elapsed);
+	void GamePadUpdate();
 
 	bool isConnected(unsigned short pad);
 	unsigned char BatteryLevel(unsigned short pad);
 	void vibration(unsigned short pad, unsigned char power, float time);
 	void vibration(unsigned short pad, bool on, unsigned char power = 50);
+
 	float TriggerPression(unsigned short pad, Xbox_one_::Trigger trigger);
-	float AxisPression(unsigned short pad, Xbox_one_::Axis axis);
+	float AxisPression(unsigned short pad, Xbox_one_::Axis	axis);
 
-	bool isPressed(unsigned short pad, unsigned short button);
-	bool isPressed(unsigned short pad, Xbox_one_::Button button);
-	bool isPressed(unsigned short pad, Xbox_one_::Trigger trigger);
-	bool isPressed(unsigned short pad, Xbox_one_::Axis axis);
+	bool isPressed(unsigned short pad, unsigned short		button);
+	bool isPressed(unsigned short pad, Xbox_one_::Button	button);
+	bool isPressed(unsigned short pad, Xbox_one_::Trigger	trigger);
+	bool isPressed(unsigned short pad, Xbox_one_::Axis		axis);
 
-	bool onPressed(unsigned short pad, unsigned short button);
-	bool onPressed(unsigned short pad, Xbox_one_::Button button);
-	bool onPressed(unsigned short pad, Xbox_one_::Trigger trigger);
-	bool onPressed(unsigned short pad, Xbox_one_::Axis axis);
+	bool onPressed(unsigned short pad, unsigned short		button);
+	bool onPressed(unsigned short pad, Xbox_one_::Button	button);
+	bool onPressed(unsigned short pad, Xbox_one_::Trigger	trigger);
+	bool onPressed(unsigned short pad, Xbox_one_::Axis		axis);
 
-	bool OnRelease(unsigned short pad, unsigned short button);
-	bool OnRelease(unsigned short pad, Xbox_one_::Button button);
-	bool OnRelease(unsigned short pad, Xbox_one_::Trigger trigger);
-	bool OnRelease(unsigned short pad, Xbox_one_::Axis axis);
+	bool OnRelease(unsigned short pad, unsigned short		button);
+	bool OnRelease(unsigned short pad, Xbox_one_::Button	button);
+	bool OnRelease(unsigned short pad, Xbox_one_::Trigger	trigger);
+	bool OnRelease(unsigned short pad, Xbox_one_::Axis		axis);
 };
 
 #endif // !GAMEPAD_H
