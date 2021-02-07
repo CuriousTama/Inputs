@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePad.h" />
+    <ClInclude Include="Errors.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="KeyBoard.h" />
     <ClInclude Include="Mouse.h" />

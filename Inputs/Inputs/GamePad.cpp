@@ -1,5 +1,6 @@
 #include "GamePad.h"
 #include <iostream>
+#include "Errors.h"
 
 #pragma comment(lib,"XInput.lib")
 #pragma comment(lib,"Xinput9_1_0.lib")
@@ -168,7 +169,7 @@ unsigned char Xbox_one::BatteryLevel(unsigned short pad)
 #if NDEBUG
 	return BATTERY_LEVEL_FULL;
 #else
-	std::cerr << "\033[33m" << "DEBUG >> " << "GamePad Battery level don't work on x64." << "\033[0m" << std::endl;
+	DebugWarning("GamePad Battery level don't work on x64.");
 	return BATTERY_LEVEL_FULL;
 #endif
 #endif

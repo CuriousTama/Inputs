@@ -25,7 +25,7 @@ void Input::eventUpdate()
 				else if (this->type == Action::onRelease)
 					this->pressed = c->onRelease(std::get<PC::Mouse>(*it));
 			}
-			else if (it->index() == 2) // gamepad button
+			else if (it->index() == 2) // game pad button
 			{
 				if (this->type == Action::KeyPressed)
 					this->pressed = x->isPressed(0, std::get<Xbox_one_::Button>(*it));
@@ -34,7 +34,7 @@ void Input::eventUpdate()
 				else if (this->type == Action::onRelease)
 					this->pressed = x->OnRelease(0, std::get<Xbox_one_::Button>(*it));
 			}
-			else if (it->index() == 3) // gamepad trigger
+			else if (it->index() == 3) // game pad trigger
 			{
 				if (this->type == Action::KeyPressed)
 					this->pressed = x->isPressed(0, std::get<Xbox_one_::Trigger>(*it));
@@ -43,7 +43,7 @@ void Input::eventUpdate()
 				else if (this->type == Action::onRelease)
 					this->pressed = x->OnRelease(0, std::get<Xbox_one_::Trigger>(*it));
 			}
-			else if (it->index() == 4) // gamepad axis
+			else if (it->index() == 4) // game pad axis
 			{
 				if (this->type == Action::KeyPressed)
 					this->pressed = x->isPressed(0, std::get<Xbox_one_::Axis>(*it));
@@ -94,17 +94,19 @@ void InputManager::update()
 void InputManager::bind(std::string name)
 {
 	auto element = InputList.find(name);
+
 	if (element != InputList.end())
-	{
 		element->second.second = true;
-	}
+	else
+		DebugWarning("the input : " + name + ", doesn't exist (bind function)");
 }
 
 void InputManager::unbind(std::string name)
 {
 	auto element = InputList.find(name);
+
 	if (element != InputList.end())
-	{
 		element->second.second = false;
-	}
+	else
+		DebugWarning("the input : " + name + ", doesn't exist (unbind function)");
 }

@@ -8,6 +8,7 @@
 
 #include "GamePad.h"
 #include "PC.h"
+#include "Errors.h"
 
 enum class Action { KeyPressed, onPress, onRelease };
 class Input
@@ -27,7 +28,7 @@ public:
 	Input(PC::Computer* cptr, Xbox_one* xptr, Action action, FUNC f, Keys... inputs);
 
 	template<class K>
-	void addKey(K& k);
+	void addKey(K k);
 
 	template<class K, class ...Keys>
 	void addKey(K k, Keys... inputs);
@@ -64,12 +65,14 @@ public:
 
 
 
+
 template<class FUNC, class ...Args>
 inline void InputManager::create(std::string name, Action action, FUNC f, Args ...args)
 {
+#if !NDEBUG
 	if (InputList.find(name) != InputList.end())
-		std::cerr << "the name : " + name + ", already exist in inputs." << std::endl;
-
+		DebugWarning("the name : " + name + ", already exist in inputs.");
+#endif
 	InputList.insert(std::make_pair(name, std::make_pair<Input, bool>(Input(&c, &x, action, f, args...), true)));
 }
 
@@ -87,7 +90,7 @@ inline Input::Input(PC::Computer* cptr, Xbox_one* xptr,Action action, FUNC f, Ke
 }
 
 template<class K>
-void Input::addKey(K& k)
+void Input::addKey(K k)
 {
 	keys.push_back(k);
 }
