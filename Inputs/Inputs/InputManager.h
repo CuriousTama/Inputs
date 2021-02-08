@@ -36,6 +36,8 @@ public:
 	void eventUpdate();
 	void update();
 
+	bool isactive() const { return pressed; }
+
 	~Input() {}
 };
 
@@ -57,6 +59,12 @@ public:
 	void bind(std::string name);
 	void unbind(std::string name);
 
+	void remove(std::string name);
+
+	template<class ...Args>
+	void addkey(std::string name, Args... keys);
+
+	bool isActive(std::string name);
 
 	void update();
 };
@@ -69,15 +77,23 @@ public:
 template<class FUNC, class ...Args>
 inline void InputManager::create(std::string name, Action action, FUNC f, Args ...args)
 {
-#if !NDEBUG
 	if (InputList.find(name) != InputList.end())
-		DebugWarning("the name : " + name + ", already exist in inputs.");
-#endif
+		DebugWarning("the name : " + name + ", already exist in inputs (create function)");
+
 	InputList.insert(std::make_pair(name, std::make_pair<Input, bool>(Input(&c, &x, action, f, args...), true)));
 }
 
 
 
+
+template<class ...Args>
+void InputManager::addkey(std::string name, Args... keys)
+{
+	if (auto f = InputList.find(name); f == InputList.end())
+		DebugWarning("the name : " + name + ", doesn't exist in inputs (addKey function)");
+	else
+		f->second.first.addKey(keys...);
+}
 
 template<class FUNC, class ...Keys>
 inline Input::Input(PC::Computer* cptr, Xbox_one* xptr,Action action, FUNC f, Keys ...inputs)

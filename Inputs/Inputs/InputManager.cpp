@@ -77,6 +77,14 @@ void InputManager::eventUpdate()
 	}
 }
 
+bool InputManager::isActive(std::string name)
+{
+	if (auto f = InputList.find(name); f == InputList.end())
+		DebugWarning("the name : " + name + ", doesn't exist in inputs (isActive function)");
+	else
+		return f->second.first.isactive();
+}
+
 void InputManager::update()
 {
 	x.GamePadUpdate();
@@ -109,4 +117,12 @@ void InputManager::unbind(std::string name)
 		element->second.second = false;
 	else
 		DebugWarning("the input : " + name + ", doesn't exist (unbind function)");
+}
+
+void InputManager::remove(std::string name)
+{
+	if (auto f = InputList.find(name); f == InputList.end())
+		DebugWarning("the name : " + name + ", doesn't exist in inputs (remove function)");
+	else 
+		InputList.erase(f);
 }

@@ -165,13 +165,8 @@ unsigned char Xbox_one::BatteryLevel(unsigned short pad)
 	return battery.BatteryLevel;
 
 #elif INTPTR_MAX == INT64_MAX 
-
-#if NDEBUG
-	return BATTERY_LEVEL_FULL;
-#else
 	DebugWarning("GamePad Battery level don't work on x64.");
 	return BATTERY_LEVEL_FULL;
-#endif
 #endif
 }
 

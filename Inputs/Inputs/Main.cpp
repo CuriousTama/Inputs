@@ -38,6 +38,9 @@ int main(int argc, char** argv)
 
 	m.bind("a");
 	m.unbind("a");
+	m.remove("a");
+	m.addkey("a", PC::KeyBoard::PAD0);
+	m.addkey("click2", PC::KeyBoard::PAD0, PC::PAD1);
 
 	while (true) // game loop
 	{		
@@ -53,12 +56,12 @@ create("name", function binded, keys... variadic); // create the input
 bind("name");						// can update
 unbind("name");						// don't update
 update();							// check for all input and do function
-
-
 remove("name");						// remove an input
-changekeys("name", new keys...);	// change all keys from the input
 addkey("name", new key);			// add a key to the input
+isActive("name");					// return if an input is pressed
+
+
+changekeys("name", new keys...);	// change all keys from the input
 removekey("name", keys);			// remove a key from the input
-ispressed("name");					// return if an input is pressed
 specifier game pad function
 */
