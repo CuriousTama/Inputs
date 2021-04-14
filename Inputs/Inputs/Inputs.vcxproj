@@ -169,10 +169,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GamePad.cpp" />
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GamePad.h" />

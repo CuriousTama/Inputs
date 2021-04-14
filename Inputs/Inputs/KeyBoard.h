@@ -35,7 +35,7 @@ namespace PC
 		SNAPSHOT	= 0x2C,
 		INSERT		= 0x2D,
 		DEL			= 0x2E,
-
+		
 		_0			= 0x30,
 		_1, _2, _3, _4, _5, _6, _7, _8, _9,
 
