@@ -1,4 +1,4 @@
-#include "InputManager.h"
+#include "Inputs.h"
 
 void foo(int a) {
 	std::cout << "function : " << a << std::endl;
@@ -10,75 +10,68 @@ struct foo2 {
 
 
 int main(int argc, char** argv) {
-	InputManager m;
-	
-	m.create("click", Action::onPress,
+	Inputs m;
+
+	m.create("click", Action::on_pressed,
 		[&m] {
-			m.x.vibration(0, 50, 0.33f);
+			m.Gamepads().vibration(0, 0.33f, 50);
 		},
-		PC::KeyBoard::A, PC::Mouse::MIDDLE_BUTTON,
+		Keyboard::Key::A, Mouse::Key::MIDDLE_BUTTON,
 			Pad(0, Xbox::A), Pad(-1, Xbox::B), Pad(0, Xbox::Trigger::LT), Pad(0, Xbox::Axis::LeftJoystick_Up));
 
-	m.removekey("click", Pad(-1, Xbox::A));
-	m.removekey("click", PC::KeyBoard::A);
-	//m.Changekeys("click", Pad(0, Xbox::B), Pad(0, Xbox::Trigger::RT));
+	m.remove_key("click", Pad(-1, Xbox::A));
+	m.remove_key("click", Keyboard::Key::A);
+	//m.change_keys("click", Pad(0, Xbox::B), Pad(0, Xbox::Trigger::RT));
 
-	m.create("click2", Action::onPress,
-		std::bind(&foo, 5),
-		PC::KeyBoard::G);
+	m.create("click2", Action::on_pressed,
+		//std::bind(&foo, 5),
+		Keyboard::Key::G, Pad(-1, PlayStation::Triangle));
 
-	m.create("click", Action::onPress,
+	m.create("click", Action::on_pressed,
 		foo2(),
-		PC::KeyBoard::F);
-	
-	m.x.BatteryLevel(0);
+		Keyboard::Key::F);
 
-	m.addkey("click", Pad(-1, Xbox::Axis::LeftJoystick_Down));
+	std::cout << m.Gamepads().is_connected(0) << std::endl;
+	std::cout << m.Gamepads().battery_level(0) << std::endl;
+
+	m.add_key("click", Pad(-1, Xbox::Axis::LeftJoystick_Down));
 
 	m.bind("a");
 	m.unbind("a");
 	m.remove("a");
-	m.addkey("a", PC::KeyBoard::PAD0);
-	m.addkey("click2", PC::KeyBoard::PAD0, PC::PAD1);
+	m.add_key("a", Keyboard::Key::PAD0);
+	m.add_key("click2", Keyboard::Key::PAD0, Keyboard::PAD1);
 
-	m.x.isConnected(0);
-	m.x.isConnected(1);
-	m.x.isConnected(2);
-	m.x.isConnected(3);
-	m.x.isConnected(4);
+	m.Gamepads().is_connected(0);
+	m.Gamepads().is_connected(1);
+	m.Gamepads().is_connected(2);
+	m.Gamepads().is_connected(3);
 
-	m.redefineAction("click", [&m] {
+	m.redefine_function("click", [&m] {
 		std::cout << "brrrr" << std::endl;
-		m.x.vibration(0, 50, 0.33f);
-		});
-
-
-
-	//std::shared_ptr<int> a;
-
-	//if (!a)
-	//{
-	//	a = std::make_shared<decltype(std::remove_reference<decltype(*a)>::type(*a))>(10);
-	//	std::cout << *a << std::endl;
-	//}
-	//else
-	//	std::cout << *a << std::endl;
-
-	std::cout << m.isBind("click") << std::endl;
-	m.unbind("click");
-	std::cout << m.isBind("click") << std::endl;
-	m.bind("click");
-	std::cout << m.isBind("click") << std::endl;
+		m.Gamepads().vibration(0, 1.f, 50);
+		m.redefine_action("click", Action::on_release);
+		}
+	);
 
 	while (true) { // game loop
 		m.update();
+
+		if (m("click2")) {
+			std::cout << "clicked" << std::endl;
+		}
+
+		/*if (m.Gamepads().is_released(0, Xbox::X))
+		{
+			std::cout << "ok" << std::endl;
+		}*/
 	}
 
 	return 0;
 }
 
 /*
-done : 
+done :
 create("name", function binded, keys... variadic); // create the input
 bind("name");						// can update
 unbind("name");						// don't update
@@ -92,9 +85,9 @@ specifier game pad function
 changekeys("name", new keys...);	// change all keys from the input
 specifier -1 for selecting all GamePad
 redefine action
-
-todo : 
 rename some functions, class
 rework acces to gamepads & pc::computer
+
+todo :
 
 */

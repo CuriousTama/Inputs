@@ -174,10 +174,10 @@
   <ItemGroup>
     <ClInclude Include="GamePad.h" />
     <ClInclude Include="Errors.h" />
-    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="InputImpl.h" />
+    <ClInclude Include="Inputs.h" />
     <ClInclude Include="KeyBoard.h" />
     <ClInclude Include="Mouse.h" />
-    <ClInclude Include="PC.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
