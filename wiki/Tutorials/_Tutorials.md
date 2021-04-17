@@ -5,14 +5,14 @@ For more informations see the [documentation](https://github.com/Tama-sama/Input
 
 
 ## Input
-- [Create Input class and keep it updated]()
-- [Make your first input and work with it]() Option (1)
-- [Make your first input and work with it]() Option (2)
-- [Play with keys after an input is created]()
-- [Change action of an input]()
-- [Change automatic function of an input]()
-- [Remove an input]()
-- [Disactivate / Reactivate an input]()
+- [Create Input class and keep it updated](Inputs/create_and_keep_updated.md)
+- [Make your first input and work with it](Inputs/make_input_1.md) Option (1)
+- [Make your first input and work with it](Inputs/make_input_2.md) Option (2)
+- [Play with keys after an input is created](Inputs/Play_with_keys.md)
+- [Change action of an input](Inputs/change_action.md)
+- [Change automatic function of an input](Inputs/change_function.md)
+- [Disactivate / Reactivate an input](Inputs/activate_disactivate.md)
+- [Remove an input](Inputs/remove.md)
 
 ## Keyboard
 
