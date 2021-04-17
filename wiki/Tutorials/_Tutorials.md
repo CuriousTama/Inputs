@@ -16,8 +16,8 @@ For more informations see the [documentation](https://github.com/Tama-sama/Input
 
 ## Keyboard
 
-- [Recover Keyboard class]()
-- [Get keys status]()
+- [Recover Keyboard class](Keyboard/recover.md)
+- [Get keys status](Keyboard/Keys.md)
 
 **Note** : The only reason you have to use Keyboard::eventUpdate() is because you don't use Input's one.
 
