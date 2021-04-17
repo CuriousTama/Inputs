@@ -53,9 +53,30 @@ int main(int argc, char** argv) {
 		m.redefine_action("click", Action::on_release);
 		}
 	);
+	
+	Gamepads g;
+	Mouse mouse;
+	Keyboard k;
+
+	std::cout << sizeof(Gamepads) << std::endl;
+	std::cout << sizeof(Mouse) << std::endl;
+	std::cout << sizeof(Keyboard) << std::endl;
 
 	while (true) { // game loop
 		m.update();
+
+		if (g.on_pressed(0, Xbox::A))
+		{
+			std::cout << "^^" << std::endl;
+		}
+		if (k.on_pressed(Keyboard::T))
+		{
+			std::cout << "^^ k" << std::endl;
+		}
+		if (mouse.on_pressed(Mouse::LEFT_BUTTON))
+		{
+			std::cout << "^^ m" << std::endl;
+		}
 
 		if (m("click2")) {
 			std::cout << "clicked" << std::endl;
@@ -89,5 +110,5 @@ rename some functions, class
 rework acces to gamepads & pc::computer
 
 todo :
-
+exist("name")
 */

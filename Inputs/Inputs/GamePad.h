@@ -128,9 +128,12 @@ class Gamepads {
 		XINPUT_STATE previous{ 0 };
 		XINPUT_STATE actual{ 0 };
 		bool connected{ false };
-	} m_gamepad[4];
+	} 
+	inline static m_gamepad[4];
 
-	std::chrono::steady_clock::time_point m_clock{ std::chrono::steady_clock::now() };
+	inline static bool m_init{ false };
+
+	inline static std::chrono::steady_clock::time_point m_clock{ std::chrono::steady_clock::now() };
 
 	void _Trigger(unsigned short pad, Xbox::Trigger trigger, bool& a, bool& b) {
 		if (!checkPad(pad)) {
@@ -219,11 +222,14 @@ class Gamepads {
 	}
 public:
 	Gamepads() {
-		if (CoInitializeEx(NULL, NULL) == S_FALSE) {
-			Error("CoInitializeEx Failed");
-		}
+		if (!m_init) {
+			if (CoInitializeEx(NULL, NULL) == S_FALSE) {
+				Error("CoInitializeEx Failed");
+			}
 
-		this->update();
+			this->update();
+			m_init = true;
+		}
 	}
 
 	~Gamepads() = default;

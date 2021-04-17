@@ -70,19 +70,24 @@ public:
 		RMENU = 0xA5
 	};
 private:
-	static const int keyCount = Keyboard::Key::RMENU + 1;
+	static const int keyCount{ Keyboard::Key::RMENU + 1 };
 
-	short previous[keyCount]{ 0 };
-	short current[keyCount]{ 0 };
+	inline static short previous[keyCount]{ 0 };
+	inline static short current[keyCount]{ 0 };
+
+	inline static bool m_init{ false };
 public:
 	Keyboard() {
-		this->eventUpdate();
-	};
+		if (!m_init) {
+			this->eventUpdate();
+			m_init = true;
+		}
+	}
 
 	~Keyboard() = default;
 
 	void eventUpdate() {
-		for (int i = 0; i < this->keyCount; i++) {
+		for (int i = BACKSPACE; i < this->keyCount; i++) {
 			this->previous[i] = this->current[i];
 			this->current[i] = GetAsyncKeyState(i);
 		}
@@ -98,6 +103,10 @@ public:
 
 	const bool on_release(Keyboard::Key k) const {
 		return this->previous[k] & 0x8000 && !(this->current[k] & 0x8000);
+	}
+
+	const bool is_released(Keyboard::Key k) const {
+		return !(this->current[k] & 0x8000);
 	}
 
 	const bool text_pressed(Keyboard::Key k) const {

@@ -19,16 +19,20 @@ public:
 	};
 
 private:
-	static const int keyCount = Mouse::Key::BUTTON_2 + 1;
+	static const int keyCount{ Mouse::Key::BUTTON_2 + 1 };
 
-	short previous[keyCount]{ 0 };
-	short current[keyCount]{ 0 };
-	POINT p;
+	inline static short previous[keyCount]{ 0 };
+	inline static short current[keyCount]{ 0 };
+	inline static POINT p;
 
+	inline static bool m_init{ false };
 public:
 	Mouse() {
-		this->eventUpdate();
-	};
+		if (!m_init) {
+			this->eventUpdate();
+			m_init = true;
+		}
+	}
 
 	~Mouse() = default;
 
