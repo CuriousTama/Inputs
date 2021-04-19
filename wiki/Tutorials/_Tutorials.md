@@ -23,9 +23,9 @@ For more informations see the [documentation](https://github.com/Tama-sama/Input
 
 ## Mouse
 
-- [Recover Mouse class]()
-- [Get buttons status]()
-- [Get mouse position]()
+- [Recover Mouse class](Mouse/recover.md)
+- [Get buttons status](Mouse/Keys.md)
+- [Other functions](Mouse/Other.md)
 
 **Note** : The only reason you have to use Mouse::eventUpdate() is because you don't use Input's one.
 
