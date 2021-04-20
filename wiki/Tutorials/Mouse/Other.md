@@ -21,6 +21,26 @@ int main(int argc, char** argv)
 **Return value :**
 Coordinate based from the top left corner of the main monitor.
 
+
+##
+### Get Mouse delta
+
+``` C++
+#include "Inputs.h"
+
+int main(int argc, char** argv) 
+{	
+	Mouse mouse;
+	std::cout << mouse.getMouseDelta().x << " : " << mouse.getMouseDelta().y << std::endl;
+	...
+	
+	return 0;
+}
+```
+
+**Return value :**
+Mouvement of the mouse from the last frame.
+
 ##
 ### Get Scrolling position
 
