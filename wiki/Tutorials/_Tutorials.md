@@ -31,11 +31,11 @@ For more informations see the [documentation](https://github.com/Tama-sama/Input
 
 ## Gamepads
 
-- [Recover Gamepads class]()
-- [Get if it's connected]()
-- [Get (buttons / Triggers / axis) status]()
-- [Get (Triggers / axis) pression]()
-- [Get battery informations]()
-- [Set vibration]()
+- [Recover Gamepads class](Gamepad/recover.md)
+- [Get if it's connected](Gamepad/connected.md)
+- [Get (buttons / Triggers / axis) status](Gamepad/keys.md)
+- [Get (Triggers / axis) pression](Gamepad/pression.md)
+- [Get battery informations](Gamepad/battery.md)
+- [Set vibration](Gamepad/vibration.md)
 
 **Note** : The only reason you have to use Gamepads::update() is because you don't use Input's one.
