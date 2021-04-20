@@ -3,11 +3,14 @@
 void foo(int a) {
 	std::cout << "function : " << a << std::endl;
 }
+//
+//void foo() {
+//	std::cout << "function : c" << std::endl;
+//}
 
 struct foo2 {
 	void operator() () { std::cout << "foo2 " << std::endl; }
 };
-
 
 int main(int argc, char** argv) {
 	Inputs m;
@@ -24,8 +27,8 @@ int main(int argc, char** argv) {
 	//m.change_keys("click", Pad(0, Xbox::B), Pad(0, Xbox::Trigger::RT));
 
 	m.create("click2", Action::on_pressed,
-		//std::bind(&foo, 5),
-		Keyboard::Key::G, Pad(-1, PlayStation::Triangle));
+		std::bind(&foo, 5),
+		Keyboard::Key::G, Mouse::SCROLL_UP);
 
 	m.create("click", Action::on_pressed,
 		foo2(),
@@ -50,42 +53,44 @@ int main(int argc, char** argv) {
 	m.redefine_function("click", [&m] {
 		std::cout << "brrrr" << std::endl;
 		m.Gamepads().vibration(0, 1.f, 50);
-		m.redefine_action("click", Action::on_release);
-		}
-	);
-	
+		m.redefine_action("click", Action::on_pressed);
+		});
+
 	Gamepads g;
 	Mouse mouse;
 	Keyboard k;
 
-	std::cout << sizeof(Gamepads) << std::endl;
-	std::cout << sizeof(Mouse) << std::endl;
-	std::cout << sizeof(Keyboard) << std::endl;
 
 	while (true) { // game loop
 		m.update();
 
-		if (g.on_pressed(0, Xbox::A))
+		if (m.Gamepads().battery_level(0) <= Gamepads::LOW_BATTERY)
 		{
-			std::cout << "^^" << std::endl;
+			std::cout << "Low Battery" << std::endl;
 		}
-		if (k.on_pressed(Keyboard::T))
-		{
-			std::cout << "^^ k" << std::endl;
-		}
-		if (mouse.on_pressed(Mouse::LEFT_BUTTON))
+
+		//std::cout << mouse.getMouseDelta().x << " : " << mouse.getMouseDelta().y << std::endl;
+
+		if (mouse.getScroll() == Mouse::SCROLL_UP)
 		{
 			std::cout << "^^ m" << std::endl;
 		}
-
-		if (m("click2")) {
-			std::cout << "clicked" << std::endl;
+		if (mouse.getScroll() == Mouse::SCROLL_DOWN)
+		{
+			std::cout << "^^ m2" << std::endl;
 		}
 
-		/*if (m.Gamepads().is_released(0, Xbox::X))
+		//if (m("click2")) {
+		//	std::cout << "clicked" << std::endl;
+		//}
+		std::cout << "LStick pression : " << g.axis_pression(0, Xbox::LeftJoystick_Right) << std::endl;
+		std::cout << "RT pression : " << g.trigger_pression(0, Xbox::RT) << std::endl;
+
+		if (m.Gamepads().on_pressed(0, Xbox::X))
 		{
-			std::cout << "ok" << std::endl;
-		}*/
+			std::cout << "'A' boutton pressed." << std::endl;
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
 	}
 
 	return 0;

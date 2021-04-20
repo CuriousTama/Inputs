@@ -126,7 +126,7 @@ public:
 			DebugWarning("the input : " + name + ", doesn't exist in inputs (addKey function)");
 		}
 		else {
-			it->second.first.keys.clear();
+			it->second.first.m_keys.clear();
 			it->second.first.addKey(keys...);
 		}
 	}

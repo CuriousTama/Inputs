@@ -221,6 +221,8 @@ class Gamepads {
 		return false;
 	}
 public:
+	enum Battery {EMPTY_BATTERY, LOW_BATTERY, AVERAGE_BATTERY, FULL_BATTERY};
+
 	Gamepads() {
 		if (!m_init) {
 			if (CoInitializeEx(NULL, NULL) == S_FALSE) {
@@ -269,9 +271,9 @@ public:
 		return m_gamepad[pad].connected;
 	}
 
-	unsigned short battery_level(unsigned short pad) {
+	Battery battery_level(unsigned short pad) {
 		if (!checkPad(pad)) {
-			return BATTERY_LEVEL_EMPTY;
+			return static_cast<Battery>(BATTERY_LEVEL_EMPTY);
 		}
 
 		XINPUT_BATTERY_INFORMATION battery;
@@ -280,10 +282,10 @@ public:
 
 		// Battery level unknown (refreshing isn't instant)
 		if (battery.BatteryType == BATTERY_TYPE_DISCONNECTED && this->is_connected(pad)) {
-			return BATTERY_LEVEL_FULL;
+			return static_cast<Battery>(BATTERY_LEVEL_FULL);
 		}
 
-		return battery.BatteryLevel;
+		return static_cast<Battery>(battery.BatteryLevel);
 	}
 
 	void vibration(unsigned short pad, float time, unsigned short power_both) {

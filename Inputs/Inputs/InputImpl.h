@@ -2,8 +2,8 @@
 #define INPUTIMPL_H
 
 #include <variant>
-#include "GamePad.h"
 #include "Mouse.h"
+#include "GamePad.h"
 #include "KeyBoard.h"
 #include <functional>
 
@@ -23,7 +23,7 @@ class InputImpl {
 	Mouse* m;
 
 	std::function<void()> func;
-	std::vector<Key> keys;
+	std::vector<Key> m_keys;
 	bool pressed{ false };
 	Action type;
 
@@ -68,10 +68,10 @@ class InputImpl {
 
 #pragma region Remove
 	void _removeKey(Keyboard::Key k) {
-		for (auto it = std::begin(keys); it != std::end(keys); it++) {
+		for (auto it = std::begin(m_keys); it != std::end(m_keys); it++) {
 			if (it->index() == 0) {
 				if (std::get<0>(*it) == k) {
-					keys.erase(it);
+					m_keys.erase(it);
 					return;
 				}
 			}
@@ -79,10 +79,10 @@ class InputImpl {
 	}
 
 	void _removeKey(Mouse::Key k) {
-		for (auto it = std::begin(keys); it != std::end(keys); it++) {
+		for (auto it = std::begin(m_keys); it != std::end(m_keys); it++) {
 			if (it->index() == 1) {
 				if (std::get<1>(*it) == k) {
-					keys.erase(it);
+					m_keys.erase(it);
 					return;
 				}
 			}
@@ -90,10 +90,10 @@ class InputImpl {
 	}
 
 	void _removeKey(std::pair<int, Xbox::Button> k) {
-		for (auto it = std::begin(keys); it != std::end(keys); it++) {
+		for (auto it = std::begin(m_keys); it != std::end(m_keys); it++) {
 			if (it->index() == 2) {
 				if (std::get<2>(*it) == k) {
-					keys.erase(it);
+					m_keys.erase(it);
 					return;
 				}
 			}
@@ -101,10 +101,10 @@ class InputImpl {
 	}
 
 	void _removeKey(std::pair<int, Xbox::Trigger> k) {
-		for (auto it = std::begin(keys); it != std::end(keys); it++) {
+		for (auto it = std::begin(m_keys); it != std::end(m_keys); it++) {
 			if (it->index() == 3) {
 				if (std::get<3>(*it) == k) {
-					keys.erase(it);
+					m_keys.erase(it);
 					return;
 				}
 			}
@@ -112,10 +112,10 @@ class InputImpl {
 	}
 
 	void _removeKey(std::pair<int, Xbox::Axis> k) {
-		for (auto it = std::begin(keys); it != std::end(keys); it++) {
+		for (auto it = std::begin(m_keys); it != std::end(m_keys); it++) {
 			if (it->index() == 4) {
 				if (std::get<4>(*it) == k) {
-					keys.erase(it);
+					m_keys.erase(it);
 					return;
 				}
 			}
@@ -149,7 +149,7 @@ class InputImpl {
 #pragma region AddKey
 	template<class K>
 	void addKey(K k) {
-		keys.push_back(k);
+		m_keys.push_back(k);
 	}
 
 	template<class K>
@@ -157,26 +157,26 @@ class InputImpl {
 		if (k.first == -1) {
 			for (int i = 0; i < 4; i++) {
 				if (is_Button(k.second)) {
-					keys.push_back(Pad(i, convert_button(k.second)));
+					m_keys.push_back(Pad(i, convert_button(k.second)));
 				}
 				else if (is_Trigger(k.second)) {
-					keys.push_back(Pad(i, convert_trigger(k.second)));
+					m_keys.push_back(Pad(i, convert_trigger(k.second)));
 				}
 				else if (is_Axis(k.second)) {
-					keys.push_back(Pad(i, convert_axis(k.second)));
+					m_keys.push_back(Pad(i, convert_axis(k.second)));
 				}
 			}
 			return;
 		}
 
 		if (is_Button(k.second)) {
-			keys.push_back(Pad(k.first, convert_button(k.second)));
+			m_keys.push_back(Pad(k.first, convert_button(k.second)));
 		}
 		else if (is_Trigger(k.second)) {
-			keys.push_back(Pad(k.first, convert_trigger(k.second)));
+			m_keys.push_back(Pad(k.first, convert_trigger(k.second)));
 		}
 		else if (is_Axis(k.second)) {
-			keys.push_back(Pad(k.first, convert_axis(k.second)));
+			m_keys.push_back(Pad(k.first, convert_axis(k.second)));
 		}
 	}
 
@@ -191,7 +191,7 @@ class InputImpl {
 		int release_count = 0;
 		this->pressed = false;
 
-		std::for_each(std::begin(keys), std::end(keys), [this, &release_count](auto& it) {
+		std::for_each(std::begin(m_keys), std::end(m_keys), [this, &release_count](auto& it) {
 
 			if (this->pressed == false) {
 
@@ -294,7 +294,7 @@ class InputImpl {
 			}
 		);
 
-		if (this->type == Action::is_released && release_count == this->keys.size()) {
+		if (this->type == Action::is_released && release_count == this->m_keys.size()) {
 			this->pressed = true;
 		}
 
