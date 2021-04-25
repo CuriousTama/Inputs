@@ -35,7 +35,7 @@ class InputImpl {
 	}
 
 #pragma region convert
-	Xbox::Button convert_button(unsigned short i) {
+	constexpr Xbox::Button convert_button(unsigned short i) {
 		if (is_Button(i)) {
 			return static_cast<Xbox::Button>(i);
 		}
@@ -45,7 +45,7 @@ class InputImpl {
 		}
 	}
 
-	Xbox::Trigger convert_trigger(unsigned short i) {
+	constexpr Xbox::Trigger convert_trigger(unsigned short i) {
 		if (is_Trigger(i)) {
 			return static_cast<Xbox::Trigger>(i);
 		}
@@ -55,7 +55,7 @@ class InputImpl {
 		}
 	}
 
-	Xbox::Axis convert_axis(unsigned short i) {
+	constexpr Xbox::Axis convert_axis(unsigned short i) {
 		if (is_Axis(i)) {
 			return static_cast<Xbox::Axis>(i);
 		}
@@ -148,12 +148,12 @@ class InputImpl {
 
 #pragma region AddKey
 	template<class K>
-	void addKey(K k) {
+	constexpr void addKey(K k) {
 		m_keys.push_back(k);
 	}
 
 	template<class K>
-	void addKey(std::pair<int, K> k) {
+	constexpr void addKey(std::pair<int, K> k) {
 		if (k.first == -1) {
 			for (int i = 0; i < 4; i++) {
 				if (is_Button(k.second)) {
@@ -181,7 +181,7 @@ class InputImpl {
 	}
 
 	template<class K, class ...Keys>
-	void addKey(K k, Keys... inputs) {
+	constexpr void addKey(K k, Keys... inputs) {
 		addKey(k);
 		addKey(inputs...);
 	}
@@ -192,7 +192,6 @@ class InputImpl {
 		this->pressed = false;
 
 		std::for_each(std::begin(m_keys), std::end(m_keys), [this, &release_count](auto& it) {
-
 			if (this->pressed == false) {
 
 				if (it.index() == 0) { // Keyboard 
@@ -303,7 +302,7 @@ class InputImpl {
 		}
 	}
 
-	inline bool is_triggered() const {
+	constexpr inline bool is_triggered() const {
 		return pressed;
 	}
 

@@ -3,7 +3,7 @@
 void foo(int a) {
 	std::cout << "function : " << a << std::endl;
 }
-//
+
 //void foo() {
 //	std::cout << "function : c" << std::endl;
 //}
@@ -60,6 +60,12 @@ int main(int argc, char** argv) {
 	Mouse mouse;
 	Keyboard k;
 
+	if (m("click1")) {
+		std::cout << "exist" << std::endl;
+	}
+	else {
+		std::cout << "don't exist" << std::endl;
+	}
 
 	while (true) { // game loop
 		m.update();
@@ -80,11 +86,8 @@ int main(int argc, char** argv) {
 			std::cout << "^^ m2" << std::endl;
 		}
 
-		//if (m("click2")) {
-		//	std::cout << "clicked" << std::endl;
-		//}
-		std::cout << "LStick pression : " << g.axis_pression(0, Xbox::LeftJoystick_Right) << std::endl;
-		std::cout << "RT pression : " << g.trigger_pression(0, Xbox::RT) << std::endl;
+		//std::cout << "LStick pression : " << g.axis_pression(0, Xbox::LeftJoystick_Right) << std::endl;
+		//std::cout << "RT pression : " << g.trigger_pression(0, Xbox::RT) << std::endl;
 
 		if (m.Gamepads().on_pressed(0, Xbox::X))
 		{
@@ -112,8 +115,8 @@ changekeys("name", new keys...);	// change all keys from the input
 specifier -1 for selecting all GamePad
 redefine action
 rename some functions, class
-rework acces to gamepads & pc::computer
+rework acces to gamepads, keyboard and mouse 
+exist("name")
 
 todo :
-exist("name")
 */

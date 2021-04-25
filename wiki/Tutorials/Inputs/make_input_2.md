@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 	{
 		inputs.update();
 
-		if (inputs.is_triggered("first_input")) // or if (inputs("first_input"))
+		if (inputs.is_triggered("first_input"))
 		{
 			std::cout << "First input fuction. \n";
 		}		

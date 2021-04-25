@@ -19,10 +19,10 @@ public:
 	Keyboard& Keyboard() { return k; }
 	Mouse& Mouse() { return m; }
 
-	bool operator()(std::string name) { return this->is_triggered(name); };
+	bool operator()(std::string name) { return this->exist(name); }
 
 	template<class ...Args>
-	void create(std::string name, Action action, std::function<void()> f, Args... args) {
+	constexpr void create(std::string name, Action action, std::function<void()> f, Args... args) {
 		if (InputList.find(name) != std::end(InputList)) {
 			DebugWarning("the name : " + name + ", already exist in inputs (create function)");
 		}
@@ -31,30 +31,34 @@ public:
 	}
 
 	template<class ...Args>
-	void create(std::string name, Action action, InputImpl::Key key, Args... args) {
+	constexpr void create(std::string name, Action action, InputImpl::Key key, Args... args) {
 		if (InputList.find(name) != std::end(InputList)) {
 			DebugWarning("the name : " + name + ", already exist in inputs (create function)");
 		}
-		
+
 		InputList.insert(std::make_pair(name, std::make_pair<InputImpl, bool>(InputImpl(&k, &m, &g, action, [] {}, key, args...), true)));
 	}
 
-	bool is_triggered(std::string name) {
+	bool is_triggered(std::string name) const {
 		auto it = InputList.find(name);
 
 		if (it == std::end(InputList)) {
-			DebugWarning("the name : " + name + ", doesn't exist in inputs (isActive function)");
+			DebugWarning("the name : " + name + ", doesn't exist in inputs (is_triggered function)");
 			return false;
 		}
 
 		return it->second.first.is_triggered();
 	}
 
-	bool is_bind(std::string name) {
+	bool exist(std::string name) const {
+		return this->InputList.find(name) != std::end(InputList);
+	}
+
+	bool is_bind(std::string name) const {
 		auto it = InputList.find(name);
 
 		if (it == std::end(InputList)) {
-			DebugWarning("the name : " + name + ", doesn't exist in inputs (isBind function)");
+			DebugWarning("the name : " + name + ", doesn't exist in inputs (is_bind function)");
 			return false;
 		}
 

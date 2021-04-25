@@ -72,10 +72,9 @@ public:
 private:
 	static const int keyCount{ Keyboard::Key::RMENU + 1 };
 
-	inline static short previous[keyCount]{ 0 };
-	inline static short current[keyCount]{ 0 };
-
+	inline static std::array<std::pair<short, short>, keyCount> m_keys;	// previous, current
 	inline static bool m_init{ false };
+
 public:
 	Keyboard() {
 		if (!m_init) {
@@ -86,31 +85,31 @@ public:
 
 	~Keyboard() = default;
 
-	void eventUpdate() {
+	constexpr void eventUpdate() {
 		for (int i = BACKSPACE; i < this->keyCount; i++) {
-			this->previous[i] = this->current[i];
-			this->current[i] = GetAsyncKeyState(i);
+			this->m_keys.at(i).first = m_keys.at(i).second;
+			this->m_keys.at(i).second = GetAsyncKeyState(i);
 		}
 	}
 
-	const bool on_pressed(Keyboard::Key k) const {
-		return !(this->previous[k] & 0x8000) && this->current[k] & 0x8000;
+	constexpr const bool on_pressed(Keyboard::Key k) const {
+		return !(this->m_keys.at(k).first & 0x8000) && this->m_keys.at(k).second & 0x8000;
 	}
 
-	const bool is_pressed(Keyboard::Key k) const {
-		return this->current[k] & 0x8000;
+	constexpr const bool is_pressed(Keyboard::Key k) const {
+		return this->m_keys.at(k).second & 0x8000;
 	}
 
-	const bool on_release(Keyboard::Key k) const {
-		return this->previous[k] & 0x8000 && !(this->current[k] & 0x8000);
+	constexpr const bool on_release(Keyboard::Key k) const {
+		return this->m_keys.at(k).first & 0x8000 && !(this->m_keys.at(k).second & 0x8000);
 	}
 
-	const bool is_released(Keyboard::Key k) const {
-		return !(this->current[k] & 0x8000);
+	constexpr const bool is_released(Keyboard::Key k) const {
+		return !(this->m_keys.at(k).second & 0x8000);
 	}
 
-	const bool text_pressed(Keyboard::Key k) const {
-		return this->current[k] & 0x0001;
+	constexpr const bool text_pressed(Keyboard::Key k) const {
+		return this->m_keys.at(k).second & 0x0001;
 	}
 };
 

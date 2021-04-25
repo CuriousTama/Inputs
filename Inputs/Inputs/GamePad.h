@@ -92,7 +92,7 @@ namespace PlayStation {
 	};
 }
 
-bool is_Button(unsigned short i) {
+constexpr bool is_Button(unsigned short i) {
 	if (i == Xbox::Cross_Up || i == Xbox::Cross_Down || i == Xbox::Cross_Left || i == Xbox::Cross_Right ||
 		i == Xbox::Start || i == Xbox::Select || i == Xbox::LeftStickPress || i == Xbox::RightStickPress ||
 		i == Xbox::LB || i == Xbox::RB || i == Xbox::A || i == Xbox::B || i == Xbox::X || i == Xbox::Y) {
@@ -102,7 +102,7 @@ bool is_Button(unsigned short i) {
 	return false;
 }
 
-bool is_Trigger(unsigned short i) {
+constexpr bool is_Trigger(unsigned short i) {
 	if (i == Xbox::LT || i == Xbox::RT) {
 		return true;
 	}
@@ -110,7 +110,7 @@ bool is_Trigger(unsigned short i) {
 	return false;
 }
 
-bool is_Axis(unsigned short i) {
+constexpr bool is_Axis(unsigned short i) {
 	if (i == Xbox::LeftJoystick_Up || i == Xbox::LeftJoystick_Down || i == Xbox::LeftJoystick_Left || i == Xbox::LeftJoystick_Right ||
 		i == Xbox::RightJoystick_Up || i == Xbox::RightJoystick_Down || i == Xbox::RightJoystick_Left || i == Xbox::RightJoystick_Right) {
 		return true;
@@ -128,29 +128,28 @@ class Gamepads {
 		XINPUT_STATE previous{ 0 };
 		XINPUT_STATE actual{ 0 };
 		bool connected{ false };
-	} 
-	inline static m_gamepad[4];
+	};
 
+	inline static std::array<gamepad, 4> m_gamepad;
 	inline static bool m_init{ false };
-
 	inline static std::chrono::steady_clock::time_point m_clock{ std::chrono::steady_clock::now() };
 
-	void _Trigger(unsigned short pad, Xbox::Trigger trigger, bool& a, bool& b) {
+	constexpr void _Trigger(unsigned short pad, Xbox::Trigger trigger, bool& a, bool& b) const {
 		if (!checkPad(pad)) {
 			return;
 		}
 
 		if (trigger == Xbox::Trigger::LT) {
-			a = m_gamepad[pad].previous.Gamepad.bLeftTrigger > 30;
-			b = m_gamepad[pad].actual.Gamepad.bLeftTrigger > 30;
+			a = m_gamepad.at(pad).previous.Gamepad.bLeftTrigger > 30;
+			b = m_gamepad.at(pad).actual.Gamepad.bLeftTrigger > 30;
 		}
 		else {
-			a = m_gamepad[pad].previous.Gamepad.bRightTrigger > 30;
-			b = m_gamepad[pad].actual.Gamepad.bRightTrigger > 30;
+			a = m_gamepad.at(pad).previous.Gamepad.bRightTrigger > 30;
+			b = m_gamepad.at(pad).actual.Gamepad.bRightTrigger > 30;
 		}
 	}
 
-	void _Axis(unsigned short pad, Xbox::Axis axis, bool& a, bool& b) {
+	constexpr void _Axis(unsigned short pad, Xbox::Axis axis, bool& a, bool& b) const {
 		if (!checkPad(pad)) {
 			return;
 		}
@@ -158,12 +157,12 @@ class Gamepads {
 		if (axis == Xbox::Axis::LeftJoystick_Left || axis == Xbox::Axis::LeftJoystick_Right) {
 
 			if (axis == Xbox::Axis::LeftJoystick_Left) {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbLX / 327.67f < -30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbLX / 327.67f < -30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbLX) / 327.67f < -30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbLX) / 327.67f < -30;
 			}
 			else {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbLX / 327.67f > 30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbLX / 327.67f > 30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbLX) / 327.67f > 30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbLX) / 327.67f > 30;
 			}
 
 			return;
@@ -172,12 +171,12 @@ class Gamepads {
 		if (axis == Xbox::Axis::LeftJoystick_Up || axis == Xbox::Axis::LeftJoystick_Down) {
 
 			if (axis == Xbox::Axis::LeftJoystick_Up) {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbLY / 327.67f > 30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbLY / 327.67f > 30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbLY) / 327.67f > 30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbLY) / 327.67f > 30;
 			}
 			else {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbLY / 327.67f < -30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbLY / 327.67f < -30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbLY) / 327.67f < -30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbLY) / 327.67f < -30;
 			}
 
 			return;
@@ -186,12 +185,12 @@ class Gamepads {
 		if (axis == Xbox::Axis::RightJoystick_Left || axis == Xbox::Axis::RightJoystick_Right) {
 
 			if (axis == Xbox::Axis::RightJoystick_Left) {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbRX / 327.67f < -30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbRX / 327.67f < -30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbRX) / 327.67f < -30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbRX) / 327.67f < -30;
 			}
 			else {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbRX / 327.67f > 30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbRX / 327.67f > 30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbRX) / 327.67f > 30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbRX) / 327.67f > 30;
 			}
 
 			return;
@@ -200,19 +199,19 @@ class Gamepads {
 		if (axis == Xbox::Axis::RightJoystick_Up || axis == Xbox::Axis::RightJoystick_Down) {
 
 			if (axis == Xbox::Axis::RightJoystick_Up) {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbRY / 327.67f > 30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbRY / 327.67f > 30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbRY) / 327.67f > 30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbRY) / 327.67f > 30;
 			}
 			else {
-				a = (float)m_gamepad[pad].previous.Gamepad.sThumbRY / 327.67f < -30;
-				b = (float)m_gamepad[pad].actual.Gamepad.sThumbRY / 327.67f < -30;
+				a = static_cast<float>(m_gamepad.at(pad).previous.Gamepad.sThumbRY) / 327.67f < -30;
+				b = static_cast<float>(m_gamepad.at(pad).actual.Gamepad.sThumbRY) / 327.67f < -30;
 			}
 
 			return;
 		}
 	}
 
-	bool checkPad(unsigned short pad) {
+	constexpr bool checkPad(unsigned short pad) const {
 		if (pad < 4) {
 			return true;
 		}
@@ -221,7 +220,7 @@ class Gamepads {
 		return false;
 	}
 public:
-	enum Battery {EMPTY_BATTERY, LOW_BATTERY, AVERAGE_BATTERY, FULL_BATTERY};
+	enum Battery { EMPTY_BATTERY, LOW_BATTERY, AVERAGE_BATTERY, FULL_BATTERY };
 
 	Gamepads() {
 		if (!m_init) {
@@ -241,42 +240,42 @@ public:
 		m_clock = std::chrono::steady_clock::now();
 
 		for (int i = 0; i < 4; i++) {
-			m_gamepad[i].previous = m_gamepad[i].actual;
-			if (XInputGetState(i, &m_gamepad[i].actual) == ERROR_SUCCESS) {
-				m_gamepad[i].connected = true;
+			m_gamepad.at(i).previous = m_gamepad.at(i).actual;
+			if (XInputGetState(i, &m_gamepad.at(i).actual) == ERROR_SUCCESS) {
+				m_gamepad.at(i).connected = true;
 			}
 			else {
-				m_gamepad[i].connected = false;
+				m_gamepad.at(i).connected = false;
 			}
 
 			// vibrations
-			if (m_gamepad[i].vibration_time > 0.f) {
-				m_gamepad[i].vibration_time -= elapsed;
+			if (m_gamepad.at(i).vibration_time > 0.f) {
+				m_gamepad.at(i).vibration_time -= elapsed;
 
-				if (m_gamepad[i].vibration_time <= 0.f) {
-					m_gamepad[i].vibration_time = 0.f;
-					m_gamepad[i].vibration->wLeftMotorSpeed = 0;
-					m_gamepad[i].vibration->wRightMotorSpeed = 0;
-					XInputSetState(i, m_gamepad[i].vibration.get());
+				if (m_gamepad.at(i).vibration_time <= 0.f) {
+					m_gamepad.at(i).vibration_time = 0.f;
+					m_gamepad.at(i).vibration->wLeftMotorSpeed = 0;
+					m_gamepad.at(i).vibration->wRightMotorSpeed = 0;
+					XInputSetState(i, m_gamepad.at(i).vibration.get());
 				}
 			}
 		}
 	}
 
-	bool is_connected(unsigned short pad) {
+	constexpr bool is_connected(unsigned short pad) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
 
-		return m_gamepad[pad].connected;
+		return m_gamepad.at(pad).connected;
 	}
 
-	Battery battery_level(unsigned short pad) {
+	constexpr Battery battery_level(unsigned short pad) const {
 		if (!checkPad(pad)) {
 			return static_cast<Battery>(BATTERY_LEVEL_EMPTY);
 		}
 
-		XINPUT_BATTERY_INFORMATION battery;
+		XINPUT_BATTERY_INFORMATION battery{};
 		SecureZeroMemory(&battery, sizeof(XINPUT_BATTERY_INFORMATION));
 		XInputGetBatteryInformation(pad, BATTERY_DEVTYPE_GAMEPAD, &battery);
 
@@ -288,22 +287,22 @@ public:
 		return static_cast<Battery>(battery.BatteryLevel);
 	}
 
-	void vibration(unsigned short pad, float time, unsigned short power_both) {
+	constexpr void vibration(unsigned short pad, float time, unsigned short power_both) {
 		if (!checkPad(pad)) {
 			return;
 		}
 
 		power_both = std::clamp<unsigned>(power_both, 0, 100);
 
-		m_gamepad[pad].vibration->wLeftMotorSpeed = (unsigned short)(power_both * 655.35f);
-		m_gamepad[pad].vibration->wRightMotorSpeed = (unsigned short)(power_both * 655.35f);
+		m_gamepad.at(pad).vibration->wLeftMotorSpeed = (unsigned short)(power_both * 655.35f);
+		m_gamepad.at(pad).vibration->wRightMotorSpeed = (unsigned short)(power_both * 655.35f);
 
-		XInputSetState(pad, m_gamepad[pad].vibration.get());
+		XInputSetState(pad, m_gamepad.at(pad).vibration.get());
 
-		m_gamepad[pad].vibration_time = time;
+		m_gamepad.at(pad).vibration_time = time;
 	}
 
-	void vibration(unsigned short pad, float time, unsigned short power_left, unsigned short power_right) {
+	constexpr void vibration(unsigned short pad, float time, unsigned short power_left, unsigned short power_right) {
 		if (!checkPad(pad)) {
 			return;
 		}
@@ -311,15 +310,15 @@ public:
 		power_left = std::clamp<unsigned>(power_left, 0, 100);
 		power_right = std::clamp<unsigned>(power_right, 0, 100);
 
-		m_gamepad[pad].vibration->wLeftMotorSpeed = (unsigned short)(power_left * 655.35f);
-		m_gamepad[pad].vibration->wRightMotorSpeed = (unsigned short)(power_right * 655.35f);
+		m_gamepad.at(pad).vibration->wLeftMotorSpeed = (unsigned short)(power_left * 655.35f);
+		m_gamepad.at(pad).vibration->wRightMotorSpeed = (unsigned short)(power_right * 655.35f);
 
-		XInputSetState(pad, m_gamepad[pad].vibration.get());
+		XInputSetState(pad, m_gamepad.at(pad).vibration.get());
 
-		m_gamepad[pad].vibration_time = time;
+		m_gamepad.at(pad).vibration_time = time;
 	}
 
-	void vibration(unsigned short pad, bool on, unsigned short power_both) {
+	constexpr void vibration(unsigned short pad, bool on, unsigned short power_both) {
 		if (!checkPad(pad)) {
 			return;
 		}
@@ -330,13 +329,13 @@ public:
 			power_both = 0;
 		}
 
-		m_gamepad[pad].vibration->wLeftMotorSpeed = (unsigned short)(power_both * 655.35f);
-		m_gamepad[pad].vibration->wRightMotorSpeed = (unsigned short)(power_both * 655.35f);
+		m_gamepad.at(pad).vibration->wLeftMotorSpeed = (unsigned short)(power_both * 655.35f);
+		m_gamepad.at(pad).vibration->wRightMotorSpeed = (unsigned short)(power_both * 655.35f);
 
-		XInputSetState(pad, m_gamepad[pad].vibration.get());
+		XInputSetState(pad, m_gamepad.at(pad).vibration.get());
 	}
 
-	void vibration(unsigned short pad, bool on, unsigned short power_left, unsigned short power_right) {
+	constexpr void vibration(unsigned short pad, bool on, unsigned short power_left, unsigned short power_right) {
 		if (!checkPad(pad)) {
 			return;
 		}
@@ -349,53 +348,54 @@ public:
 			power_right = 0;
 		}
 
-		m_gamepad[pad].vibration->wLeftMotorSpeed = (unsigned short)(power_left * 655.35f);
-		m_gamepad[pad].vibration->wRightMotorSpeed = (unsigned short)(power_right * 655.35f);
+		m_gamepad.at(pad).vibration->wLeftMotorSpeed = (unsigned short)(power_left * 655.35f);
+		m_gamepad.at(pad).vibration->wRightMotorSpeed = (unsigned short)(power_right * 655.35f);
 
-		XInputSetState(pad, m_gamepad[pad].vibration.get());
+		XInputSetState(pad, m_gamepad.at(pad).vibration.get());
 	}
 
-	float trigger_pression(unsigned short pad, Xbox::Trigger trigger) {
+	constexpr float trigger_pression(unsigned short pad, Xbox::Trigger trigger) const {
 		if (!checkPad(pad)) {
 			return 0.f;
 		}
 
 		if (trigger == Xbox::Trigger::LT) {
-			return m_gamepad[pad].actual.Gamepad.bLeftTrigger / 2.55f;
+			return m_gamepad.at(pad).actual.Gamepad.bLeftTrigger / 2.55f;
 		}
 
 		if (trigger == Xbox::Trigger::RT) {
-			return m_gamepad[pad].actual.Gamepad.bRightTrigger / 2.55f;
+			return m_gamepad.at(pad).actual.Gamepad.bRightTrigger / 2.55f;
 		}
 
 		return 0.f;
 	}
 
-	float axis_pression(unsigned short pad, Xbox::Axis axis) {
+	constexpr float axis_pression(unsigned short pad, Xbox::Axis axis) const {
 		if (!checkPad(pad)) {
 			return 0.f;
 		}
 
 		if (axis == Xbox::Axis::LeftJoystick_Left || axis == Xbox::Axis::LeftJoystick_Right) {
-			return m_gamepad[pad].actual.Gamepad.sThumbLX / 327.67f;
+			return m_gamepad.at(pad).actual.Gamepad.sThumbLX / 327.67f;
 		}
 
 		if (axis == Xbox::Axis::LeftJoystick_Up || axis == Xbox::Axis::LeftJoystick_Down) {
-			return m_gamepad[pad].actual.Gamepad.sThumbLY / 327.67f;
+			return m_gamepad.at(pad).actual.Gamepad.sThumbLY / 327.67f;
 		}
 
 		if (axis == Xbox::Axis::RightJoystick_Left || axis == Xbox::Axis::RightJoystick_Right) {
-			return m_gamepad[pad].actual.Gamepad.sThumbRX / 327.67f;
+			return m_gamepad.at(pad).actual.Gamepad.sThumbRX / 327.67f;
 		}
 
 		if (axis == Xbox::Axis::RightJoystick_Up || axis == Xbox::Axis::RightJoystick_Down) {
-			return m_gamepad[pad].actual.Gamepad.sThumbRY / 327.67f;
+			return m_gamepad.at(pad).actual.Gamepad.sThumbRY / 327.67f;
 		}
 
 		return 0.f;
 	}
 
-	bool is_pressed(unsigned short pad, unsigned short button) {
+#pragma region is_pressed
+	constexpr bool is_pressed(unsigned short pad, unsigned short button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -413,15 +413,15 @@ public:
 		}
 	}
 
-	bool is_pressed(unsigned short pad, Xbox::Button button) {
+	constexpr bool is_pressed(unsigned short pad, Xbox::Button button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
 
-		return m_gamepad[pad].actual.Gamepad.wButtons & button;
+		return m_gamepad.at(pad).actual.Gamepad.wButtons & button;
 	}
 
-	bool is_pressed(unsigned short pad, Xbox::Trigger trigger) {
+	constexpr bool is_pressed(unsigned short pad, Xbox::Trigger trigger) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -431,7 +431,7 @@ public:
 		return b;
 	}
 
-	bool is_pressed(unsigned short pad, Xbox::Axis axis) {
+	constexpr bool is_pressed(unsigned short pad, Xbox::Axis axis) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -440,8 +440,10 @@ public:
 		_Axis(pad, axis, a, b);
 		return b;
 	}
+#pragma endregion is_pressed
 
-	bool is_released(unsigned short pad, unsigned short button) {
+#pragma region is_released
+	constexpr bool is_released(unsigned short pad, unsigned short button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -459,15 +461,15 @@ public:
 		}
 	}
 
-	bool is_released(unsigned short pad, Xbox::Button button) {
+	constexpr bool is_released(unsigned short pad, Xbox::Button button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
 
-		return !(m_gamepad[pad].actual.Gamepad.wButtons & button);
+		return !(m_gamepad.at(pad).actual.Gamepad.wButtons & button);
 	}
 
-	bool is_released(unsigned short pad, Xbox::Trigger trigger) {
+	constexpr bool is_released(unsigned short pad, Xbox::Trigger trigger) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -477,7 +479,7 @@ public:
 		return !b;
 	}
 
-	bool is_released(unsigned short pad, Xbox::Axis axis) {
+	constexpr bool is_released(unsigned short pad, Xbox::Axis axis) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -486,8 +488,10 @@ public:
 		_Axis(pad, axis, a, b);
 		return !b;
 	}
+#pragma endregion is_released
 
-	bool on_pressed(unsigned short pad, unsigned short button) {
+#pragma region on_pressed
+	constexpr bool on_pressed(unsigned short pad, unsigned short button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -505,17 +509,17 @@ public:
 		}
 	}
 
-	bool on_pressed(unsigned short pad, Xbox::Button button) {
+	constexpr bool on_pressed(unsigned short pad, Xbox::Button button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
 
-		bool a = m_gamepad[pad].previous.Gamepad.wButtons & button;
-		bool b = m_gamepad[pad].actual.Gamepad.wButtons & button;
+		bool a = m_gamepad.at(pad).previous.Gamepad.wButtons & button;
+		bool b = m_gamepad.at(pad).actual.Gamepad.wButtons & button;
 		return !a && b;
 	}
 
-	bool on_pressed(unsigned short pad, Xbox::Trigger trigger) {
+	constexpr bool on_pressed(unsigned short pad, Xbox::Trigger trigger) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -525,7 +529,7 @@ public:
 		return !a && b;
 	}
 
-	bool on_pressed(unsigned short pad, Xbox::Axis axis) {
+	constexpr bool on_pressed(unsigned short pad, Xbox::Axis axis) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -534,8 +538,10 @@ public:
 		_Axis(pad, axis, a, b);
 		return !a && b;
 	}
+#pragma endregion on_pressed
 
-	bool on_release(unsigned short pad, unsigned short button) {
+#pragma region on_release
+	constexpr bool on_release(unsigned short pad, unsigned short button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -553,17 +559,17 @@ public:
 		}
 	}
 
-	bool on_release(unsigned short pad, Xbox::Button button) {
+	constexpr bool on_release(unsigned short pad, Xbox::Button button) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
 
-		bool a = m_gamepad[pad].previous.Gamepad.wButtons & (int)button;
-		bool b = m_gamepad[pad].actual.Gamepad.wButtons & (int)button;
+		bool a = m_gamepad.at(pad).previous.Gamepad.wButtons & (int)button;
+		bool b = m_gamepad.at(pad).actual.Gamepad.wButtons & (int)button;
 		return a && !b;
 	}
 
-	bool on_release(unsigned short pad, Xbox::Trigger trigger) {
+	constexpr bool on_release(unsigned short pad, Xbox::Trigger trigger) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -573,7 +579,7 @@ public:
 		return a && !b;
 	}
 
-	bool on_release(unsigned short pad, Xbox::Axis axis) {
+	constexpr bool on_release(unsigned short pad, Xbox::Axis axis) const {
 		if (!checkPad(pad)) {
 			return false;
 		}
@@ -582,10 +588,11 @@ public:
 		_Axis(pad, axis, a, b);
 		return a && !b;
 	}
+#pragma endregion on_release
 };
 
 template <typename T>
-std::pair<int, T> Pad(int pad, T action) {
+constexpr std::pair<int, T> Pad(int pad, T action) {
 	if (pad >= -1 && pad < 4) {
 		return std::make_pair(pad, action);
 	}
