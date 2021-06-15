@@ -22,7 +22,7 @@ public:
 	bool operator()(std::string name) { return this->exist(name); }
 
 	template<class ...Args>
-	constexpr void create(std::string name, Action action, std::function<void()> f, Args... args) {
+	void create(std::string name, Action action, std::function<void()> f, Args... args) {
 		if (InputList.find(name) != std::end(InputList)) {
 			DebugWarning("the name : " + name + ", already exist in inputs (create function)");
 		}
@@ -31,7 +31,7 @@ public:
 	}
 
 	template<class ...Args>
-	constexpr void create(std::string name, Action action, InputImpl::Key key, Args... args) {
+	void create(std::string name, Action action, InputImpl::Key key, Args... args) {
 		if (InputList.find(name) != std::end(InputList)) {
 			DebugWarning("the name : " + name + ", already exist in inputs (create function)");
 		}

@@ -26,9 +26,9 @@ int main(int argc, char** argv) {
 	m.remove_key("click", Keyboard::Key::A);
 	//m.change_keys("click", Pad(0, Xbox::B), Pad(0, Xbox::Trigger::RT));
 
-	m.create("click2", Action::on_pressed,
+	/*m.create("click2", Action::on_pressed,
 		std::bind(&foo, 5),
-		Keyboard::Key::G, Mouse::SCROLL_UP);
+		Keyboard::Key::G, Mouse::SCROLL_UP);*/
 
 	m.create("click", Action::on_pressed,
 		foo2(),
@@ -98,25 +98,25 @@ int main(int argc, char** argv) {
 
 	return 0;
 }
-
-/*
-done :
-create("name", function binded, keys... variadic); // create the input
-bind("name");						// can update
-unbind("name");						// don't update
-update();							// check for all input and do function
-remove("name");						// remove an input
-addkey("name", new key);			// add a key to the input
-isActive("name");					// return if an input is pressed
-isBind("name");						// return if an input is binded
-removekey("name", keys);			// remove a key from the input
-specifier game pad function
-changekeys("name", new keys...);	// change all keys from the input
-specifier -1 for selecting all GamePad
-redefine action
-rename some functions, class
-rework acces to gamepads, keyboard and mouse 
-exist("name")
-
-todo :
-*/
+//
+///*
+//done :
+//create("name", function binded, keys... variadic); // create the input
+//bind("name");						// can update
+//unbind("name");						// don't update
+//update();							// check for all input and do function
+//remove("name");						// remove an input
+//addkey("name", new key);			// add a key to the input
+//isActive("name");					// return if an input is pressed
+//isBind("name");						// return if an input is binded
+//removekey("name", keys);			// remove a key from the input
+//specifier game pad function
+//changekeys("name", new keys...);	// change all keys from the input
+//specifier -1 for selecting all GamePad
+//redefine action
+//rename some functions, class
+//rework acces to gamepads, keyboard and mouse 
+//exist("name")
+//
+//todo :
+//*/

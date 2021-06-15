@@ -2,6 +2,7 @@
 #define ERROR_H
 
 #include <iostream>
+#include <winnt.h>
 
 #define FOREGROUND_DEFAULT		FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE		// default color of console text
 #define FOREGROUND_ORANGE		FOREGROUND_RED | FOREGROUND_GREEN						// red + green = orange
@@ -12,7 +13,7 @@ constexpr void DebugWarning(_Elem str) {
 #if !NDEBUG
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, FOREGROUND_ORANGE);
-	std::cerr << "DEBUG WARNING >> " << str << std::endl;
+	std::cerr << "DEBUG WARNING >> " << str << '\n';
 	SetConsoleTextAttribute(hConsole, FOREGROUND_DEFAULT);
 #endif
 }
@@ -21,7 +22,7 @@ template <class _Elem>
 constexpr void Warning(_Elem str) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, FOREGROUND_ORANGE);
-	std::cerr << "WARNING >> " << str << std::endl;
+	std::cerr << "WARNING >> " << str << '\n';
 	SetConsoleTextAttribute(hConsole, FOREGROUND_DEFAULT);
 }
 
@@ -30,7 +31,7 @@ constexpr void DebugError(_Elem str) {
 #if !NDEBUG
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, FOREGROUND_LIGHT_RED);
-	std::cerr << "DEBUG ERROR >> " << str << std::endl;
+	std::cerr << "DEBUG ERROR >> " << str << '\n';
 	SetConsoleTextAttribute(hConsole, FOREGROUND_DEFAULT);
 #endif
 }
@@ -39,7 +40,7 @@ template <class _Elem>
 constexpr void Error(_Elem str) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, FOREGROUND_LIGHT_RED);
-	std::cerr << "ERROR >> " << str << std::endl;
+	std::cerr << "ERROR >> " << str << '\n';
 	SetConsoleTextAttribute(hConsole, FOREGROUND_DEFAULT);
 }
 

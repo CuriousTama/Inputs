@@ -7,9 +7,9 @@
 
 #pragma comment(lib, "User32.lib")
 
-#pragma warning( push )
+#pragma warning(push)
 #pragma warning(disable : 26812)   // disable warning of using enum
-#pragma warning(disable : 6387)   // disable warning of PeekMessageW using nullptr in first arg
+#pragma warning(disable : 6387)    // disable warning of PeekMessageW using nullptr in first arg
 
 constexpr POINT& operator+=(POINT& p1, const POINT& p2) {
 	p1.x += p2.x;
@@ -40,11 +40,11 @@ private:
 	static const int keyCount{ Mouse::Key::BUTTON_2 + 1 };
 
 	inline static unsigned int m_instances{ 0 };
-	inline static std::array<std::pair<short, short>, keyCount> m_keys;	// <previous, current>
-	inline static std::pair<short, short> m_scroll;	// <previous, current>
-	inline static POINT m_position;
-	inline static POINT m_moveDelta;
-	inline static std::thread m_th;
+	inline static std::array<std::pair<short, short>, keyCount> m_keys{};	// <previous, current>
+	inline static std::pair<short, short> m_scroll{};	// <previous, current>
+	inline static POINT m_position{};
+	inline static POINT m_moveDelta{};
+	inline static std::thread m_th{};
 
 	inline static std::atomic<short> m_th_scroll{ 0 };
 	inline static std::atomic<bool> m_end{ false };
@@ -68,8 +68,8 @@ public:
 	Mouse() {
 		if (m_instances++ == 0) {
 
-			m_th = std::thread([this] {
-				HHOOK mouseHook = SetWindowsHookEx(WH_MOUSE_LL, Mouse::MouseHookProc, GetModuleHandle(NULL), 0);
+			m_th = std::thread([] {
+				HHOOK mouseHook = SetWindowsHookEx(WH_MOUSE_LL, Mouse::MouseHookProc, GetModuleHandle(0), 0);
 				std::chrono::steady_clock::time_point clock;
 
 				while (!m_end) {
@@ -117,7 +117,7 @@ public:
 		}
 	}
 
-	constexpr const bool is_pressed(Mouse::Key m) const {
+	const bool is_pressed(Mouse::Key m) const {
 		if (m != SCROLL_UP && m != SCROLL_DOWN) {
 			return m_keys.at(m).second & 0x8000;
 		}
@@ -125,7 +125,7 @@ public:
 		return m_scroll.second == m;
 	}
 
-	constexpr const bool on_pressed(Mouse::Key m) const {
+	const bool on_pressed(Mouse::Key m) const {
 		if (m != SCROLL_UP && m != SCROLL_DOWN) {
 			return !(m_keys.at(m).first & 0x8000) && m_keys.at(m).second & 0x8000;
 		}
@@ -133,7 +133,7 @@ public:
 		return m_scroll.second == m && m_scroll.first != m;
 	}
 
-	constexpr const bool on_release(Mouse::Key m) const {
+	const bool on_release(Mouse::Key m) const {
 		if (m != SCROLL_UP && m != SCROLL_DOWN) {
 			return m_keys.at(m).first & 0x8000 && !(m_keys.at(m).second & 0x8000);
 		}
@@ -141,7 +141,7 @@ public:
 		return m_scroll.second != m && m_scroll.first == m;
 	}
 
-	constexpr const bool is_release(Mouse::Key m) const {
+	const bool is_release(Mouse::Key m) const {
 		if (m != SCROLL_UP && m != SCROLL_DOWN) {
 			return !(m_keys.at(m).second & 0x8000);
 		}
@@ -149,18 +149,18 @@ public:
 		return m_scroll.second != m;
 	}
 
-	constexpr const POINT getMousePos() const {
+	const POINT getMousePos() const {
 		return this->m_position;
 	}
 
-	constexpr const POINT getMouseDelta() const {
+	const POINT getMouseDelta() const {
 		return this->m_moveDelta;
 	}
 
-	constexpr const unsigned int getScroll() const {
+	const unsigned int getScroll() const {
 		return this->m_scroll.second;
 	}
 };
 
-#pragma warning( pop )
+#pragma warning(pop)
 #endif // !MOUSE_H

@@ -1,6 +1,9 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
+#include <array>
+#include <Windows.h>
+
 #pragma comment(lib, "User32.lib") // GetAsyncKeyState Function
 
 #pragma warning( push )
@@ -85,30 +88,30 @@ public:
 
 	~Keyboard() = default;
 
-	constexpr void eventUpdate() {
+	const void eventUpdate() {
 		for (int i = BACKSPACE; i < this->keyCount; i++) {
 			this->m_keys.at(i).first = m_keys.at(i).second;
 			this->m_keys.at(i).second = GetAsyncKeyState(i);
 		}
 	}
 
-	constexpr const bool on_pressed(Keyboard::Key k) const {
+	const bool on_pressed(Keyboard::Key k) const {
 		return !(this->m_keys.at(k).first & 0x8000) && this->m_keys.at(k).second & 0x8000;
 	}
 
-	constexpr const bool is_pressed(Keyboard::Key k) const {
+	const bool is_pressed(Keyboard::Key k) const {
 		return this->m_keys.at(k).second & 0x8000;
 	}
 
-	constexpr const bool on_release(Keyboard::Key k) const {
+	const bool on_release(Keyboard::Key k) const {
 		return this->m_keys.at(k).first & 0x8000 && !(this->m_keys.at(k).second & 0x8000);
 	}
 
-	constexpr const bool is_released(Keyboard::Key k) const {
+	const bool is_released(Keyboard::Key k) const {
 		return !(this->m_keys.at(k).second & 0x8000);
 	}
 
-	constexpr const bool text_pressed(Keyboard::Key k) const {
+	const bool text_pressed(Keyboard::Key k) const {
 		return this->m_keys.at(k).second & 0x0001;
 	}
 };

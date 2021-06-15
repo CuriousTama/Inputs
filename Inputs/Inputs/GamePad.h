@@ -122,6 +122,7 @@ constexpr bool is_Axis(unsigned short i) {
 class Gamepads {
 
 	struct gamepad {
+		gamepad() {};
 		std::unique_ptr<XINPUT_VIBRATION> vibration{ std::make_unique<XINPUT_VIBRATION>() };
 		float vibration_time{ 0.f };
 
@@ -130,7 +131,7 @@ class Gamepads {
 		bool connected{ false };
 	};
 
-	inline static std::array<gamepad, 4> m_gamepad;
+	inline static std::array<gamepad, 4> m_gamepad{};
 	inline static bool m_init{ false };
 	inline static std::chrono::steady_clock::time_point m_clock{ std::chrono::steady_clock::now() };
 
@@ -411,6 +412,8 @@ public:
 		else if (is_Axis(button)) {
 			return is_pressed(pad, static_cast<Xbox::Axis>(button));
 		}
+		
+		return false;
 	}
 
 	constexpr bool is_pressed(unsigned short pad, Xbox::Button button) const {
@@ -459,6 +462,8 @@ public:
 		else if (is_Axis(button)) {
 			return is_released(pad, static_cast<Xbox::Axis>(button));
 		}
+
+		return false;
 	}
 
 	constexpr bool is_released(unsigned short pad, Xbox::Button button) const {
@@ -507,6 +512,8 @@ public:
 		else if (is_Axis(button)) {
 			return on_pressed(pad, static_cast<Xbox::Axis>(button));
 		}
+
+		return false;
 	}
 
 	constexpr bool on_pressed(unsigned short pad, Xbox::Button button) const {
@@ -557,6 +564,8 @@ public:
 		else if (is_Axis(button)) {
 			return on_release(pad, static_cast<Xbox::Axis>(button));
 		}
+
+		return false;
 	}
 
 	constexpr bool on_release(unsigned short pad, Xbox::Button button) const {
