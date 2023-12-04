@@ -1,18 +1,30 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30517.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Inputs", "Inputs\Inputs.vcxproj", "{81C220ED-FB9F-4E09-A363-D9B407288339}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ClangDebug|x64 = ClangDebug|x64
+		ClangDebug|x86 = ClangDebug|x86
+		ClangRelease|x64 = ClangRelease|x64
+		ClangRelease|x86 = ClangRelease|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangDebug|x64.ActiveCfg = ClangDebug|x64
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangDebug|x64.Build.0 = ClangDebug|x64
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangDebug|x86.ActiveCfg = ClangDebug|Win32
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangDebug|x86.Build.0 = ClangDebug|Win32
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangRelease|x64.ActiveCfg = ClangRelease|x64
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangRelease|x64.Build.0 = ClangRelease|x64
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangRelease|x86.ActiveCfg = ClangRelease|Win32
+		{81C220ED-FB9F-4E09-A363-D9B407288339}.ClangRelease|x86.Build.0 = ClangRelease|Win32
 		{81C220ED-FB9F-4E09-A363-D9B407288339}.Debug|x64.ActiveCfg = Debug|x64
 		{81C220ED-FB9F-4E09-A363-D9B407288339}.Debug|x64.Build.0 = Debug|x64
 		{81C220ED-FB9F-4E09-A363-D9B407288339}.Debug|x86.ActiveCfg = Debug|Win32

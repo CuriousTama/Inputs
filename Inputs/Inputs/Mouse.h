@@ -4,6 +4,7 @@
 #include <thread>
 #include <Windows.h>
 #include <array>
+#include <atomic>
 
 #pragma comment(lib, "User32.lib")
 
